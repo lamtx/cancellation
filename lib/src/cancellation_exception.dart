@@ -1,4 +1,4 @@
-class CancellationException implements Exception {
+base class CancellationException implements Exception {
   const CancellationException();
 
   @override

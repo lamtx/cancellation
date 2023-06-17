@@ -3,4 +3,4 @@ description: Cancellation token.
 version: 1.0.0
 
 environment:
-  sdk: ^2.18.0
+  sdk: ^3.0.0

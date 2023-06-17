@@ -1,12 +1,12 @@
 import 'cancellation_exception.dart';
 
-abstract class CancellationToken {
+abstract interface class CancellationToken {
   bool get isCancelled;
 
   static const CancellationToken neverCancel = _NeverCancelToken();
 }
 
-class _NeverCancelToken implements CancellationToken {
+final class _NeverCancelToken implements CancellationToken {
   const _NeverCancelToken();
 
   @override
