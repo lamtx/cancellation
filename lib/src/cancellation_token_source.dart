@@ -19,7 +19,7 @@ class _CancellationTokenSourceImpl implements CancellationTokenSource {
 
   @override
   void cancel() {
-    _token._isCancelled = true;
+    _token.cancel();
   }
 
   @override
@@ -31,13 +31,35 @@ class _CancellationTokenSourceImpl implements CancellationTokenSource {
   CancellationToken get token => _token;
 }
 
+typedef _VoidCallBack = void Function();
+
 class _CancellationTokenImpl implements CancellationToken {
   _CancellationTokenImpl([this._isCancelled = false, this._parent]);
 
   bool _isCancelled;
-  CancellationToken? _parent;
+  final CancellationToken? _parent;
+
+  List<_VoidCallBack> _callbacks = [];
 
   @override
   bool get isCancelled =>
       _isCancelled || (_parent != null && _parent!.isCancelled);
+
+  void cancel() {
+    _isCancelled = true;
+    final list = _callbacks;
+    _callbacks = [];
+    for (final callback in list) {
+      callback();
+    }
+  }
+
+  @override
+  void addOnCancel(void Function() callback) {
+    if (isCancelled) {
+      callback();
+    } else {
+      _callbacks.add(callback);
+    }
+  }
 }
